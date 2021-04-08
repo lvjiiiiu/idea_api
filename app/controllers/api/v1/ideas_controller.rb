@@ -1,8 +1,18 @@
 module Api
   module V1
     class IdeasController < ApplicationController
+      
       def index
-        ideas = Idea.all
+        if params[:category_name].present? && Category.find_by(name: params[:category_name]).present?
+          category = Category.find_by(name: params[:category_name])
+          ideas = Idea.where(category_id: category.id)
+        elsif  params[:category_name].present? && Category.find_by(name: params[:category_name]).nil?
+          render status: 404
+          return
+        else
+          ideas = Idea.all
+        end
+        
         @idea_index = []
         ideas.each do |idea|
           idea = {"id": idea.id, "category": idea.category.name, "body": idea.body }
