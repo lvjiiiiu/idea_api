@@ -22,10 +22,18 @@ module Api
       end
 
       def create
+        # リクエストのcategory_nameとbodyはnull:false
+        # nullの場合、ステータスコード422を返す
+        if params[:category_name].nil? || params[:body].nil?
+          render status: 422
+          return
+        end
+        
         idea = Idea.new
+        
         if Category.find_by(name: params[:category_name]).present?
           category = Category.find_by(name: params[:category_name])
-        else
+        else 
           category = Category.new(name: params[:category_name])
           category.save
         end
@@ -46,4 +54,4 @@ module Api
       end
     end
   end
-end
+end 
