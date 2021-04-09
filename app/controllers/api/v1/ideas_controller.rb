@@ -1,24 +1,28 @@
 module Api
   module V1
     class IdeasController < ApplicationController
-      
       def index
-        if params[:category_name].present? && Category.find_by(name: params[:category_name]).present?
-          category = Category.find_by(name: params[:category_name])
-          ideas = Idea.where(category_id: category.id)
-        elsif  params[:category_name].present? && Category.find_by(name: params[:category_name]).nil?
+        @category = Category.find_by(name: params[:category_name])
+
+        if params[:category_name].present? && @category.present?
+          ideas = Idea.where(category_id: @category.id)
+        elsif params[:category_name].present? && @category.nil?
           render status: 404
           return
         else
           ideas = Idea.all
         end
-        
+
         @idea_index = []
         ideas.each do |idea|
-          idea = {"id": idea.id, "category": idea.category.name, "body": idea.body }
+          idea = {
+            "id": idea.id,
+            "category": idea.category.name,
+            "body": idea.body
+          }
           @idea_index << idea
         end
-        render json: { data: @idea_index}
+        render json: { data: @idea_index }
       end
 
       def create
@@ -28,12 +32,12 @@ module Api
           render status: 422
           return
         end
-        
+
         idea = Idea.new
-        
+
         if Category.find_by(name: params[:category_name]).present?
           category = Category.find_by(name: params[:category_name])
-        else 
+        else
           category = Category.new(name: params[:category_name])
           category.save
         end
@@ -54,4 +58,4 @@ module Api
       end
     end
   end
-end 
+end

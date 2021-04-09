@@ -1,0 +1,21 @@
+# inherit_from: .rubocop_todo.yml
+
+# 自動生成されたファイルは対象外
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'test/**/*'
+    - 'spec/**/*'
+
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/AsciiComments:
+  Exclude:
+    - 'app/controllers/api/v1/ideas_controller.rb'
+    
+Style/Documentation:
+  Enabled: false
