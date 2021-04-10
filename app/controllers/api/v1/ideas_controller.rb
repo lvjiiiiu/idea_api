@@ -16,13 +16,14 @@ module Api
         @idea_index = []
         ideas.each do |idea|
           idea = {
-            "id": idea.id,
-            "category": idea.category.name,
-            "body": idea.body
+            "\"\"id\"\"": idea.id,
+            "\"\"category\"\"": "\"#{idea.category.name}\"",
+            "\"\"body\"\"": "\"#{idea.body}\""
           }
           @idea_index << idea
         end
-        render json: { data: @idea_index }
+        
+        render json: { "\"\"data\"\"": @idea_index }
       end
 
       def create
